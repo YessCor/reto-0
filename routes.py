@@ -235,8 +235,7 @@ def register_routes(app):
 
     @app.errorhandler(400)
     def bad_request(_error):
-        flash("La solicitud no es válida. Vuelve a intentarlo.")
-        return redirect(request.referrer or url_for("index"))
+        return "La solicitud no es válida. Vuelve a intentarlo.", 400
 
 
 def validate_csrf():
