@@ -84,7 +84,7 @@ class RecipeAppTests(unittest.TestCase):
             "/register",
             data={"csrf_token": "invalid", "username": "cocinera", "password": "unaclave123"},
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 400)
 
         token = self.csrf_token()
         response = self.client.post(
