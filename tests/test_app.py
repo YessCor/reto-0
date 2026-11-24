@@ -49,8 +49,8 @@ class RecipeAppTests(unittest.TestCase):
             },
             follow_redirects=True,
         )
-        self.assertIn("Ensalada fresca".encode(), response.data)
-        self.assertIn("Pepino".encode(), response.data)
+        self.assertIn(b"Ensalada fresca", response.data)
+        self.assertIn(b"Pepino", response.data)
 
         self.client.post("/logout", data={"csrf_token": self.csrf_token()})
         token = self.csrf_token()
@@ -59,7 +59,7 @@ class RecipeAppTests(unittest.TestCase):
             data={"csrf_token": token, "username": "cocinera", "password": "unaclave123"},
             follow_redirects=True,
         )
-        self.assertIn("Ensalada fresca".encode(), response.data)
+        self.assertIn(b"Ensalada fresca", response.data)
 
     def test_search_matches_ingredient_case_insensitively(self):
         self.register()
@@ -73,11 +73,11 @@ class RecipeAppTests(unittest.TestCase):
         )
 
         response = self.client.get("/?q=choco")
-        self.assertIn("Tarta de chocolate".encode(), response.data)
-        self.assertNotIn("No hay recetas".encode(), response.data)
+        self.assertIn(b"Tarta de chocolate", response.data)
+        self.assertNotIn(b"No hay recetas", response.data)
 
         response = self.client.get("/?q=limón")
-        self.assertNotIn("Tarta de chocolate".encode(), response.data)
+        self.assertNotIn(b"Tarta de chocolate", response.data)
 
     def test_invalid_csrf_and_weak_password_are_rejected(self):
         response = self.client.post(
@@ -91,7 +91,7 @@ class RecipeAppTests(unittest.TestCase):
             "/register",
             data={"csrf_token": token, "username": "cocinera", "password": "short"},
         )
-        self.assertIn("al menos 8".encode(), response.data)
+        self.assertIn(b"al menos 8", response.data)
 
 
 if __name__ == "__main__":

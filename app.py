@@ -3,6 +3,7 @@ import os
 import re
 import secrets
 import sqlite3
+from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -18,7 +19,6 @@ from flask import (
     url_for,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS users (
@@ -206,7 +206,7 @@ def create_app(test_config=None):
                         session["user_id"],
                         title,
                         description,
-                        datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                        datetime.now(timezone.utc).isoformat(timespec="seconds"),  # noqa: UP017
                     ),
                 )
                 g.db.executemany(
@@ -240,7 +240,7 @@ def escape_like(value):
 def initialize_database(app):
     database_path = Path(app.config["DATABASE"])
     database_path.parent.mkdir(parents=True, exist_ok=True)
-    with sqlite3.connect(database_path) as database:
+    with closing(sqlite3.connect(database_path)) as database, database:
         database.execute("PRAGMA foreign_keys = ON")
         database.executescript(SCHEMA)
 
