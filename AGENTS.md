@@ -42,3 +42,7 @@ Permite explorar recetas sin cuenta y registrarse para publicar recetas propias.
 - No hacer commit ni push.
 
 ## Lecciones aprendidas
+
+- **Manejo de errores:** Validar tokens CSRF y entradas inválidas respondiendo con un estado de error claro (como 400 o 404) sin exponer trazas (`Traceback`) ni detalles internos del servidor.
+- **Ejecución:** Mantener una configuración reproducible entre arranques (como una `SECRET_KEY` estable cuando no esté definida en el entorno) y documentar pasos claros con el entorno virtual activo.
+- **Estructura:** Separar rutas web, funciones de validación/lógica y acceso a base de datos en módulos distintos en lugar de concentrarlo todo en `app.py`.
